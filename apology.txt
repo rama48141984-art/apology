@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Jacqueline, de Alex 🧸❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fbc4ab, #ffddd2, #e29578);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+
+        /* --- Fondo de partículas flotantes globales --- */
+        .ambient-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -100px;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.5;
+            font-size: 1.5rem;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Tarjeta Contenedora Principal (Glassmorphism) --- */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 4px solid #fec5bb;
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            width: 90%;
+            max-width: 480px;
+            min-height: 480px;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hidden { display: none !important; }
+
+        h1, h2, .handwritten {
+            font-family: 'Caveat', cursive;
+            color: #e56b6f;
+        }
+
+        h1 { font-size: 2.8rem; margin-bottom: 1rem; }
+        h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+        
+        p {
+            color: #4a4a4a;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1.8rem;
+        }
+
+        /* --- Botones --- */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(229, 107, 111, 0.2);
+        }
+
+        .btn-next { background-color: #e56b6f; color: white; }
+        .btn-next:hover { background-color: #eaac8b; transform: scale(1.05); }
+        .btn-back { background-color: #fff0f3; color: #e56b6f; border: 2px solid #fec5bb; }
+
+        #noBtn {
+            position: absolute;
+            transition: all 0.2s ease-out;
+        }
+
+        /* --- Animaciones Específicas de Páginas --- */
+        .bear-icon { font-size: 5rem; animation: pulse 2s infinite ease-in-out; margin-bottom: 1rem; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Página 3: Ositos peleando/mordiendo */
+        .bear-fight { display: flex; gap: 15px; position: relative; height: 90px; margin-bottom: 1rem; }
+        .bear-angy { animation: bite 1s infinite alternate; }
+        @keyframes bite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-30px) rotate(-10deg); }
+        }
+
+        /* Página 4: Acordeón */
+        .accordion { width: 100%; text-align: left; margin-bottom: 1.5rem; }
+        .acc-item { background: #fff0f3; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; border: 1px solid #fec5bb; }
+        .acc-header { padding: 10px; font-weight: 600; color: #b56576; cursor: pointer; display: flex; justify-content: space-between; }
+        .acc-content { padding: 0 10px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: #555; font-size: 0.95rem; }
+
+        /* Página 5: Línea de tiempo */
+        .timeline { border-left: 3px solid #e56b6f; padding-left: 15px; text-align: left; width: 100%; margin-bottom: 1rem; }
+        .timeline-item { margin-bottom: 1rem; position: relative; }
+        .timeline-item::before { content: '✨'; position: absolute; left: -25px; top: 0; background: white; border-radius: 50%; }
+
+        /* Página 6: Slider */
+        .slider-container { width: 100%; margin: 1.5rem 0; }
+        .range-slider { width: 100%; accent-color: #e56b6f; cursor: pointer; }
+
+        /* Página 7: Caja de Regalo / Olivo */
+        .gift-box { font-size: 5.5rem; cursor: pointer; animation: wobble 1.5s infinite; }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0); }
+            50% { transform: rotate(10deg) scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <div style="position:fixed; top:20px; z-index:100; font-size:0.85rem; background:rgba(255,255,255,0.8); padding:5px 15px; border-radius:20px; color:#e56b6f; font-weight:bold;">
+        🎵 Sonando: Devuélveme a mi chica (8-bit)
+    </div>
+
+    <div class="ambient-layer" id="particles"></div>
+
+    <div class="card" id="page1">
+        <div class="bear-icon">🧸👋</div>
+        <h1>¡Hola, Jacqueline!</h1>
+        <p>Alex ha preparado este espacio especialmente para ti. Es un pequeño rincón digital diseñado con mucho cuidado. ¿Estás lista para escuchar lo que tiene que decirte?</p>
+        <div class="btn-container">
+            <button class="btn btn-next" onclick="startExperience()">Sí, adelante ✨</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page2">
+        <div class="bear-icon">🥺💝</div>
+        <h2>Una pregunta importante...</h2>
+        <p>Jacqueline, las cosas no han estado perfectas, pero tú eres lo más importante. De todo corazón... ¿Me perdonas?</p>
+        <div class="btn-container" style="height: 50px; position: relative;">
+            <button class="btn btn-next" onclick="goToPage(4)">Sí, te perdono 💕</button>
+            <button class="btn btn-back" id="noBtn" onmouseenter="escapeNo()" onclick="escapeNo()">No 😡</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page3">
+        <div class="bear-fight">
+            <div style="font-size:4rem;">😭</div>
+            <div class="bear-angy" style="font-size:4rem;">🐻💥</div>
+        </div>
+        <h2>¡Oye! ¿Por qué presionaste NO?</h2>
+        <p>¡El osito de Alex está mordiendo al otro de la frustración! No se suponía que podías elegir esa opción. Por favor, regresa y cambia esa respuesta, Jacqueline.</p>
+        <div class="btn-container">
+            <button class="btn btn-next" onclick="goToPage(2)">⬅️ Regresar y elegir bien</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page4">
+        <h2>Tienes toda la razón, porque...</h2>
+        <p>Haciendo clic abajo verás que entiendo perfectamente por qué estás molesta:</p>
+        <div class="accordion">
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">1. Tu tiempo es sagrado ⏳ <span>+</span></div>
+                <div class="acc-content"><p>No debí tomar a la ligera los momentos que compartimos ni hacerte esperar.</p></div>
+            </div>
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">2. Tu sensibilidad es única 🌸 <span>+</span></div>
+                <div class="acc-content"><p>A veces olvido lo mucho que te afectan los detalles y prometo ser más atento a tus emociones.</p></div>
+            </div>
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">3. Te mereces lo mejor 🌟 <span>+</span></div>
+                <div class="acc-content"><p>Alex sabe que eres una persona increíble y que mereces un trato lleno de paciencia y amor total.</p></div>
+            </div>
+        </div>
+        <div class="btn-container">
+            <button class="btn btn-next" onclick="goToPage(5)">Continuar ➡️</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page5">
+        <h2>Mi Plan de Acción 🛠️</h2>
+        <p>No son solo palabras, Jacqueline. Aquí están mis promesas firmes para mejorar nuestra relación:</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong>Paso 1: Escuchar con atención</strong>
+                <p style="font-size:0.9rem; margin-bottom:0.5rem;">Prestar total oído a tus quejas sin justificarme.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>Paso 2: Más paciencia y calma</strong>
+                <p style="font-size:0.9rem; margin-bottom:0.5rem;">Controlar mis impulsos para cuidar siempre tus palabras.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>Paso 3: Detalles diarios</strong>
+                <p style="font-size:0.9rem; margin-bottom:0.5rem;">Recordarte lo especial que eres, no solo cuando me equivoco.</p>
+            </div>
+        </div>
+        <div class="btn-container">
+            <button class="btn btn-next" onclick="goToPage(6)">Ver más ➡️</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page6">
+        <h2>Termómetro de la Calma 🌡️</h2>
+        <p>¿Qué tan "salada" o contenta te sientes en este momento? Ajusta la barra. ¡Llévala al 100% cuando estés lista!</p>
+        <div class="slider-container">
+            <input type="range" min="0" max="100" value="30" class="range-slider" id="loveSlider" oninput="checkSlider(this.value)">
+            <p style="font-weight:bold; margin-top:1rem; color:#b56576;" id="sliderStatus">Estado: Un poco molesta aún 😤</p>
+        </div>
+        <div class="btn-container">
+            <button class="btn btn-next hidden" id="sliderNextBtn" onclick="goToPage(7)">¡Reclamar Regalo! 🎁</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="page7">
+        <h2>Tu Ofrenda de Paz 🌿</h2>
+        <p>Haz clic en el regalo de abajo para desenvolver el mensaje final que Alex tiene reservado para ti, Jacqueline.</p>
+        <div class="gift-box" id="gift" onclick="openGift()">🎁</div>
+        <div class="btn-container"></div>
+    </div>
+
+    <div class="card hidden" id="page8">
+        <div class="bear-icon">❤️🧸💍</div>
+        <h2>Para mi persona favorita</h2>
+        <p class="handwritten" style="font-size: 1.5rem; color: #b56576;">
+            "Jacqueline, gracias por tu infinita paciencia y por tener un corazón tan noble. Lamento mucho haber causado un mal momento. Prometo cuidar de nosotros y hacerte sonreír todos los días que vengan. Te adoro muchísimo."
+        </p>
+        <p style="font-weight: bold; font-size: 0.9rem; color: #e56b6f;">— Con amor, Alex ✨</p>
+        <div class="btn-container">
+            <button class="btn btn-back" onclick="resetAll()">Empezar de nuevo 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let isMusicPlaying = false;
+
+        // --- Generador de Partículas de Fondo ---
+        const pContainer = document.getElementById('particles');
+        const emojis = ['❤️', '🧸', '✨', '🌸', '💕'];
+        
+        function makeParticles() {
+            for(let i=0; i<15; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.classList.add('particle');
+                    p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.animationDuration = (Math.random() * 4 + 5) + 's';
+                    pContainer.appendChild(p);
+                    setTimeout(() => p.remove(), 9000);
+                }, i * 400);
+            }
+        }
+        setInterval(makeParticles, 8000);
+        makeParticles();
+
+        // --- Sistema de Navegación ---
+        function goToPage(num) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById('page' + num).classList.remove('hidden');
+        }
+
+        function startExperience() {
+            goToPage(2);
+            if(!isMusicPlaying) {
+                playMusicLoop();
+                isMusicPlaying = true;
+            }
+        }
+
+        // --- Comportamiento Botón "No" ---
+        let noAttempts = 0;
+        function escapeNo() {
+            noAttempts++;
+            if(noAttempts >= 3) {
+                noAttempts = 0;
+                const noBtn = document.getElementById('noBtn');
+                noBtn.style.position = 'static';
+                noBtn.style.transform = 'none';
+                goToPage(3); // Castigo ositos
+                return;
+            }
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.position = 'fixed';
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // --- Control de Acordeón ---
+        function toggleAcc(header) {
+            const content = header.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.padding = "0 10px";
+            } else {
+                document.querySelectorAll('.acc-content').forEach(c => {
+                    c.style.maxHeight = null;
+                    c.style.padding = "0 10px";
+                });
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.padding = "10px";
+            }
+        }
+
+        // --- Control de Slider de Perdón ---
+        function checkSlider(val) {
+            const status = document.getElementById('sliderStatus');
+            const nextBtn = document.getElementById('sliderNextBtn');
+            
+            if(val < 40) {
+                status.innerText = "Estado: Un poco molesta aún 😤";
+                nextBtn.classList.add('hidden');
+            } else if(val >= 40 && val < 85) {
+                status.innerText = "Estado: Lo estoy pensando... 🤔🌸";
+                nextBtn.classList.add('hidden');
+            } else if(val >= 85 && val < 100) {
+                status.innerText = "Estado: ¡Casi listo! Falta un empujón más 💕";
+                nextBtn.classList.add('hidden');
+            } else if(val == 100) {
+                status.innerText = "Estado: ¡Totalmente Reconciliados! 😍🎉";
+                nextBtn.classList.remove('hidden');
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // --- Animación del Regalo ---
+        function openGift() {
+            const gift = document.getElementById('gift');
+            gift.innerText = "💐✨❤️";
+            setTimeout(() => {
+                goToPage(8);
+            }, 1000);
+        }
+
+        function resetAll() {
+            document.getElementById('loveSlider').value = 30;
+            document.getElementById('sliderStatus').innerText = "Estado: Un poco molesta aún 😤";
+            document.getElementById('sliderNextBtn').classList.add('hidden');
+            document.getElementById('gift').innerText = "🎁";
+            goToPage(1);
+        }
+
+        // --- API de Audio Nativa: Notas de "Devuélveme a mi chica" ---
+        function playMusicLoop() {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Transcripción aproximada en frecuencias [Frecuencia (Hz), Duración (ms)]
+                const introMelody = [
+                    [293.66, 200], [329.63, 200], [349.23, 200], [392.00, 400], [0, 100],
+                    [392.00, 200], [349.23, 200], [329.63, 200], [293.66, 400], [0, 100],
+                    [293.66, 200], [329.63, 200], [349.23, 200], [261.63, 400], [0, 100],
+                    [349.23, 200], [329.63, 200], [293.66, 400]
+                ];
+
+                function playNode(freq, dur, startTime) {
+                    if (freq === 0) return;
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    
+                    osc.type = 'triangle'; // Tono retro/tierno
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    
+                    gain.gain.setValueAtTime(0.05, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + (dur/1000) - 0.02);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + (dur/1000));
+                }
+
+                function runLoop() {
+                    let current = audioCtx.currentTime;
+                    introMelody.forEach(note => {
+                        playNode(note[0], note[1], current);
+                        current += (note[1] / 1000) + 0.02;
+                    });
+                    setTimeout(runLoop, 6500); // Repetir bucle continuamente
+                }
+                
+                runLoop();
+            } catch (e) {
+                console.log("Hardware de audio no inicializado correctamente.");
+            }
+        }
+    </script>
+</body>
+</html>
